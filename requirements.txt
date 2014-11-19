@@ -1,0 +1,8 @@
+Flask==0.9
+Werkzeug==0.9.4
+boto==2.14.0
+itsdangerous==0.23
+wsgiref==0.1.2
+Jinja2==2.7.3
+MarkupSafe==0.23
+requests==2.4.3
