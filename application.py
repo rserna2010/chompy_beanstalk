@@ -41,38 +41,38 @@ def add_to_que(data):
     status = queue.write(m)
 
 
-# @application.route('/send', methods=['POST'])
-# def send():
-#     """Send an e-mail using Mailgun"""
-#
-#     response = None
-#     if request.json is None:
-#         # Expect application/json request
-#         response = Response("", status=415)
-#     else:
-#         message = dict()
-#         try:
-#             message = request.json
-#
-#             send_simple_message(message['to'], message['url_to_file'])
-#             response = Response("", status=200)
-#         except Exception as ex:
-#             logging.exception('Error processing message: %s' % request.json)
-#             response = Response(ex.message, status=500)
-#
-#     return response
-#
-# def send_simple_message(to, url_to_file):
-#     return requests.post(
-#         os.environ['MAILGUN_DOMAIN'],
-#         auth=("api", os.environ['MAILGUN_API_KEY']),
-#         data={"from": 'support@balancedpayments.com',
-#               "to": [to],
-#               "subject": 'Balanced CSV Download Ready',
-#               "text": 'Your CSV is ready to download. ' + url_to_file +
-#                       ' This file will be available for you to download for '
-#                       'the next two days.'
-#         })
+@application.route('/send', methods=['POST'])
+def send():
+    """Send an e-mail using Mailgun"""
+
+    response = None
+    if request.json is None:
+        # Expect application/json request
+        response = Response("", status=415)
+    else:
+        message = dict()
+        try:
+            message = request.json
+
+            send_simple_message(message['to'], message['marketplace_id'])
+            response = Response("", status=200)
+        except Exception as ex:
+            logging.exception('Error processing message: %s' % request.json)
+            response = Response(ex.message, status=500)
+
+    return response
+
+def send_simple_message(to, url_to_file):
+    return requests.post(
+        os.environ['MAILGUN_DOMAIN'],
+        auth=("api", os.environ['MAILGUN_API_KEY']),
+        data={"from": 'support@balancedpayments.com',
+              "to": [to],
+              "subject": 'Balanced CSV Download Ready',
+              "text": 'Your CSV is ready to download. ' + marketplace_id +
+                      ' This file will be available for you to download for '
+                      'the next two days.'
+        })
 
 if __name__ == '__main__':
     application.run(host='0.0.0.0')
